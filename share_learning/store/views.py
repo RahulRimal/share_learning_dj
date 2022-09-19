@@ -8,7 +8,7 @@ from rest_framework.decorators import action
 
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 
-from .permissions import IsSuperOrHasCustomerPermissions, IsSuperOrHasPostPermissionsOrReadOnly, IsSuperUser
+from .permissions import IsPostOwner, IsSuperOrHasCustomerPermissions, IsSuperOrHasPostPermissionsOrReadOnly, IsSuperUser
 
 from .models import Customer, Post, PostImage
 
@@ -49,8 +49,8 @@ class PostViewSet(ModelViewSet):
 
     serializer_class = PostSerializer
 
-    # permission_classes = [IsAdminOrReadOnly]
-    permission_classes = [IsSuperOrHasPostPermissionsOrReadOnly]
+    permission_classes = [IsPostOwner]
+    # permission_classes = [IsSuperOrHasPostPermissionsOrReadOnly]
 
     def get_serializer_context(self):
         return {'request': self.request}
