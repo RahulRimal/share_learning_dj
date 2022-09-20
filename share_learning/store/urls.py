@@ -14,8 +14,13 @@ router.register('posts', views.PostViewSet, basename='posts')
 
 posts_router = routers.NestedDefaultRouter(router, 'posts', lookup='post')
 posts_router.register('images', views.PostImageViewSet, basename='post-images')
+posts_router.register('comments', views.PostCommentViewSet, basename='post-comments')
 
-urlpatterns = router.urls + posts_router.urls
+
+customers_router = routers.NestedDefaultRouter(router, 'customers', lookup='customer')
+customers_router.register('comments', views.PostCommentViewSet, basename='customer-comments')
+
+urlpatterns = router.urls + posts_router.urls + customers_router.urls
 
 
 # urlpatterns = [

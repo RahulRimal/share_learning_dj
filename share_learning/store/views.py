@@ -8,12 +8,12 @@ from rest_framework.decorators import action
 
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 
-from .permissions import IsPostOwner, IsSuperOrHasCustomerPermissions, IsSuperOrHasPostPermissionsOrReadOnly, IsSuperUser
+from .permissions import IsCommentOwner, IsPostOwner, IsSuperOrHasCustomerPermissions, IsSuperOrHasPostPermissionsOrReadOnly, IsSuperUser
 
-from .models import Customer, Post, PostImage
+from .models import Customer, Post, PostComment, PostImage
 
 
-from .serializers import CustomerSerializer, PostImageSerializer, PostSerializer
+from .serializers import CustomerSerializer, PostCommentSerializer, PostImageSerializer, PostSerializer
 from store import serializers
 
 
@@ -67,7 +67,6 @@ class PostViewSet(ModelViewSet):
 
 
 class PostImageViewSet(ModelViewSet):
-    # queryset = PostImage.objects.all()
     serializer_class = PostImageSerializer
 
     def get_queryset(self):
@@ -75,3 +74,13 @@ class PostImageViewSet(ModelViewSet):
 
     def get_serializer_context(self):
         return {'post_id': self.kwargs['post_pk']}
+
+
+class PostCommentViewSet(ModelViewSet):
+
+    serializer_class = PostCommentSerializer
+
+    permission_classes = [IsCommentOwner]
+
+    def get_queryset(self):
+        return PostComment.objects.filter(post_id = self.kwargs['post_pk'])

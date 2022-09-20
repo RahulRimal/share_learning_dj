@@ -67,8 +67,22 @@ class Post(models.Model):
     post_rating = models.FloatField(null=True, blank=True)
     posted_on = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self) -> str:
+        return f'{self.id} -> {self.book_name}'
+
 
 class PostImage(models.Model):
     post = models.ForeignKey(
         Post, on_delete=models.CASCADE, related_name='images')
     image = models.ImageField(upload_to='post/images')
+
+
+
+class PostComment(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    user = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    comment_body = models.TextField()
+    created_date = models.DateTimeField(auto_now_add=True)
+
+    def post_id(self):
+        return self.post.id

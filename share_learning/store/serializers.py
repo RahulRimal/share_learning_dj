@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 
-from .models import Customer, Post, PostImage
+from .models import Customer, Post, PostComment, PostImage
 
 
 class CustomerSerializer(serializers.ModelSerializer):
@@ -44,3 +44,11 @@ class PostSerializer(serializers.ModelSerializer):
         model = Post
         fields = ['id', 'user', 'book_name', 'author', 'description', 'bought_date',
                   'unit_price', 'book_count', 'images', 'wishlisted', 'post_type', 'post_rating', 'posted_on']
+
+
+class PostCommentSerializer(serializers.ModelSerializer):
+    # user_id = serializers.IntegerField(source='user_id', read_only=True)
+    user_id = serializers.IntegerField(read_only=True)
+    class Meta:
+        model = PostComment
+        fields = ['id', 'user_id', 'post_id', 'comment_body', 'created_date']
